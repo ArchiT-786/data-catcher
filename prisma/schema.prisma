@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATA_CATCHER_PRISMA_DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
 }
 
 enum UserRole {
@@ -39,13 +39,13 @@ model Account {
 }
 
 model ScanEvent {
-  id          String   @id @default(cuid())
+  id          String          @id @default(cuid())
   barcodeId   String?
-  deviceId    String? // optional: browser fingerprint later
-  scannedAt   DateTime @default(now())
-  redirectUrl String? // e.g. https://instagram.com
+  deviceId    String?         // optional: browser fingerprint later
+  scannedAt   DateTime        @default(now())
+  redirectUrl String?         // e.g. https://instagram.com
 
-  data ScanEventData[]
+  data        ScanEventData[]
 }
 
 model ScanEventData {
@@ -55,7 +55,7 @@ model ScanEventData {
   value       Json
   createdAt   DateTime @default(now())
 
-  scanEvent ScanEvent @relation(fields: [scanEventId], references: [id], onDelete: Cascade)
+  scanEvent   ScanEvent @relation(fields: [scanEventId], references: [id], onDelete: Cascade)
 }
 
 model Session {
