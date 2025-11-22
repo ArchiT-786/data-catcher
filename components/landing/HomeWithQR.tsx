@@ -30,7 +30,7 @@ export default function HomeWithQR() {
     const json = await res.json();
 
     if (json?.scanEventId) {
-      const url = `${window.location.origin}/scan?event=${json.scanEventId}`;
+      const url = `${window.location.origin}/watch`;
       setQrUrl(url);
     }
   };

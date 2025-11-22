@@ -1,48 +1,62 @@
-import "@/styles/globals.css";
+// import "@/styles/globals.css";
 
-import { fontGeist, fontHeading, fontSans, fontUrban } from "@/assets/fonts";
-import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "next-themes";
+// import { fontGeist, fontHeading, fontSans, fontUrban } from "@/assets/fonts";
+// import { SessionProvider } from "next-auth/react";
+// import { ThemeProvider } from "next-themes";
 
-import { cn, constructMetadata } from "@/lib/utils";
-import { Toaster } from "@/components/ui/sonner";
-import { Analytics } from "@/components/analytics";
-import ModalProvider from "@/components/modals/providers";
-import { TailwindIndicator } from "@/components/tailwind-indicator";
+// import { cn, constructMetadata } from "@/lib/utils";
+// import { Toaster } from "@/components/ui/sonner";
+// import { Analytics } from "@/components/analytics";
+// import ModalProvider from "@/components/modals/providers";
+// import { TailwindIndicator } from "@/components/tailwind-indicator";
 
-interface RootLayoutProps {
-  children: React.ReactNode;
-}
+// interface RootLayoutProps {
+//   children: React.ReactNode;
+// }
 
-export const metadata = constructMetadata();
+// export const metadata = constructMetadata();
 
-export default function RootLayout({ children }: RootLayoutProps) {
+// export default function RootLayout({ children }: RootLayoutProps) {
+//   return (
+//     <html lang="en" suppressHydrationWarning>
+//       <head />
+//       <body
+//         className={cn(
+//           "min-h-screen bg-background font-sans antialiased",
+//           fontSans.variable,
+//           fontUrban.variable,
+//           fontHeading.variable,
+//           fontGeist.variable,
+//         )}
+//       >
+//         <SessionProvider>
+//           <ThemeProvider
+//             attribute="class"
+//             defaultTheme="system"
+//             enableSystem
+//             disableTransitionOnChange
+//           >
+//             <ModalProvider>{children}</ModalProvider>
+//             <Analytics />
+//             <Toaster richColors closeButton />
+//             <TailwindIndicator />
+//           </ThemeProvider>
+//         </SessionProvider>
+//       </body>
+//     </html>
+//   );
+// }
+import "../styles/globals.css"; // or "./globals.css" if moved
+
+export const metadata = {
+  title: "Data Catcher",
+};
+
+export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head />
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable,
-          fontUrban.variable,
-          fontHeading.variable,
-          fontGeist.variable,
-        )}
-      >
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ModalProvider>{children}</ModalProvider>
-            <Analytics />
-            <Toaster richColors closeButton />
-            <TailwindIndicator />
-          </ThemeProvider>
-        </SessionProvider>
-      </body>
+    <html lang="en">
+      <body>{children}</body>
     </html>
   );
 }
+
