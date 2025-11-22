@@ -31,4 +31,5 @@ const nextConfig = {
   },
 };
 
-module.exports = withContentlayer(nextConfig);
+// module.exports = withContentlayer(nextConfig);
+module.exports = nextConfig;
