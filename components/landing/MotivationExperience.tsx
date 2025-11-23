@@ -40,7 +40,7 @@ export default function MotivationExperience() {
     const handler = (e: MouseEvent) => {
       const x = e.clientX;
       const y = e.clientY;
-      el.style.transform = `translate(${x - 80}px, ${y - 80}px)`; // ~160px glow
+      el.style.transform = `translate(${x - 80}px, ${y - 80}px)`;
     };
 
     window.addEventListener("pointermove", handler);
@@ -63,6 +63,14 @@ export default function MotivationExperience() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // ---- REQUIRED IMAGE CHECK ----
+    if (!imageBase64) {
+      setError("Please upload a photo before running the scan.");
+      return;
+    }
+    // -------------------------------
+
     setStage("calculating");
     setLoading(true);
 
@@ -93,7 +101,6 @@ export default function MotivationExperience() {
     }
   };
 
-  // --- scan progress based on required fields filled ---
   const requiredFields = [
     form.fullName,
     form.email,
@@ -118,26 +125,23 @@ export default function MotivationExperience() {
     <div
       className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-white flex items-center justify-center px-4"
       style={{
-        backgroundImage: "radial-gradient(circle at top, #4c1d95 0, transparent 55%), radial-gradient(circle at bottom, #0f766e 0, transparent 55%)",
+        backgroundImage:
+          "radial-gradient(circle at top, #4c1d95 0, transparent 55%), radial-gradient(circle at bottom, #0f766e 0, transparent 55%)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
     >
-      {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/80" />
 
-      {/* Cursor glow */}
       <div
         ref={cursorRef}
         className="pointer-events-none fixed top-0 left-0 w-40 h-40 rounded-full bg-violet-500/20 blur-3xl z-10"
       />
 
-      {/* Background grid */}
       <div className="pointer-events-none absolute inset-0 opacity-20">
         <div className="w-full h-full bg-[radial-gradient(circle_at_center,#1f2937_1px,transparent_1px)] [background-size:24px_24px]" />
       </div>
 
-      {/* Main content */}
       <div className="relative z-20 w-full max-w-5xl">
         <AnimatePresence mode="wait">
           {stage === "intro" && (
@@ -157,8 +161,7 @@ export default function MotivationExperience() {
                 <span className="text-violet-300">Human Vibe Scanner</span> 🧬
               </h1>
               <p className="text-gray-300">
-                We&apos;ll analyze your face, your lore, and your main quest.  
-                In return, you get a dangerously honest score and a custom hype speech.
+                We'll analyze your face, your lore, and your main quest.
               </p>
 
               <motion.button
@@ -182,33 +185,26 @@ export default function MotivationExperience() {
               className="bg-black/40 border border-violet-500/30 rounded-3xl p-6 md:p-8 backdrop-blur-2xl shadow-[0_0_60px_rgba(139,92,246,0.4)]"
             >
               <div className="flex flex-col md:flex-row gap-8">
-                {/* Left side: scan panel */}
+                {/* LEFT SIDE PANEL */}
                 <div className="md:w-1/3 space-y-6">
                   <div className="space-y-2">
                     <p className="text-xs tracking-[0.25em] text-violet-300 uppercase">
                       Step 1 · subject input
                     </p>
                     <h2 className="text-2xl font-semibold">
-                      Who&apos;s entering the{" "}
-                      <span className="text-violet-300">simulation</span>?
+                      Who's entering the <span className="text-violet-300">simulation</span>?
                     </h2>
                     <p className="text-gray-300 text-sm">
-                      Fill this out like you&apos;re designing a character in a
-                      game. We&apos;ll do the nerdy analysis.
+                      Fill this out like a character creator.
                     </p>
                   </div>
 
-                  {/* Avatar scanner */}
                   <div className="relative mt-4 flex flex-col items-center">
                     <div className="relative w-32 h-32">
-                      {/* outer glow ring */}
                       <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-violet-500/60 via-transparent to-cyan-400/50 blur-lg" />
-                      {/* pulsing ring */}
                       <div className="absolute inset-0 rounded-full border border-violet-400/60 animate-pulse" />
-                      {/* inner circle */}
                       <div className="absolute inset-2 rounded-full bg-black/70 border border-white/10 overflow-hidden flex items-center justify-center text-xs text-gray-400">
                         {previewUrl ? (
-                          // eslint-disable-next-line @next/next/no-img-element
                           <img
                             src={previewUrl}
                             alt="Preview"
@@ -236,11 +232,10 @@ export default function MotivationExperience() {
                     />
 
                     <p className="mt-2 text-[11px] text-gray-500">
-                      Optional, but it makes the simulation feel 3x cooler.
+                      Required for the vibe scan.
                     </p>
                   </div>
 
-                  {/* Progress bar */}
                   <div className="mt-6 space-y-2">
                     <div className="flex items-center justify-between text-[11px] text-gray-400">
                       <span>{progressLabel}</span>
@@ -254,65 +249,55 @@ export default function MotivationExperience() {
                         transition={{ type: "spring", stiffness: 80, damping: 20 }}
                       />
                     </div>
-                    <p className="text-[11px] text-gray-500">
-                      Each answer you type charges the scanner. Hit 100% to unlock
-                      your lab report.
-                    </p>
                   </div>
                 </div>
 
-                {/* Right side: form */}
-                <form
-                  onSubmit={handleSubmit}
-                  className="md:w-2/3 space-y-4"
-                >
+                {/* RIGHT SIDE FORM */}
+                <form onSubmit={handleSubmit} className="md:w-2/3 space-y-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <InputField
-                      label="Your government name (jk, your full name)"
+                      label="Your full name"
                       required
                       value={form.fullName}
                       onChange={(v) => setForm((f) => ({ ...f, fullName: v }))}
                     />
                     <InputField
-                      label="Email (where we’d send your report)"
+                      label="Email"
                       type="email"
                       required
                       value={form.email}
                       onChange={(v) => setForm((f) => ({ ...f, email: v }))}
                     />
                     <InputField
-                      label="Phone (for when you’re famous)"
+                      label="Phone"
                       required
                       value={form.phone}
                       onChange={(v) => setForm((f) => ({ ...f, phone: v }))}
                     />
                     <InputField
-                      label="Location in this universe (optional)"
+                      label="Location (optional)"
                       value={form.address}
                       onChange={(v) => setForm((f) => ({ ...f, address: v }))}
                     />
                   </div>
 
                   <TextareaField
-                    label="Describe your current character build"
+                    label="Describe your character build"
                     required
-                    placeholder="Example: Coffee-fueled builder, low-key overthinker, high-key ambitious, part-time meme machine..."
+                    placeholder="Coffee-fueled builder, part-time meme machine..."
                     value={form.about}
                     onChange={(v) => setForm((f) => ({ ...f, about: v }))}
                   />
+
                   <TextareaField
-                    label="What’s the main quest you’re locked into right now?"
+                    label="What's your current main quest?"
                     required
-                    placeholder="Example: Build a SaaS, escape 9–5, buy my parents a house, become scary-good at my craft..."
+                    placeholder="Build a SaaS, escape 9–5..."
                     value={form.dream}
                     onChange={(v) => setForm((f) => ({ ...f, dream: v }))}
                   />
 
-                  {error && (
-                    <p className="text-sm text-red-400">
-                      {error}
-                    </p>
-                  )}
+                  {error && <p className="text-sm text-red-400">{error}</p>}
 
                   <div className="flex items-center justify-between gap-4 pt-2">
                     <button
@@ -322,6 +307,7 @@ export default function MotivationExperience() {
                     >
                       ← Abort Mission
                     </button>
+
                     <button
                       type="submit"
                       disabled={loading}
@@ -345,26 +331,19 @@ export default function MotivationExperience() {
               className="flex flex-col items-center gap-6 text-center"
             >
               <div className="relative w-48 h-48">
-                {/* outer pulse */}
                 <div className="absolute inset-0 rounded-full bg-violet-500/10 animate-ping" />
-                {/* ring */}
                 <div className="absolute inset-4 rounded-full border-4 border-violet-400/60" />
-                {/* inner core */}
                 <div className="absolute inset-10 rounded-full bg-black/70 border border-violet-300/70 flex flex-col items-center justify-center text-xs text-violet-100 px-4 text-center">
                   <span className="mb-1 text-[10px] tracking-[0.3em] uppercase">
                     lab engine
                   </span>
                   <span className="text-sm font-semibold">Crunching your stats...</span>
                 </div>
-                {/* rotating arc */}
                 <div className="absolute inset-4 rounded-full border-t-4 border-t-cyan-400 border-transparent animate-spin" />
               </div>
+
               <p className="text-lg text-gray-200 max-w-xl">
-                Our AI scientists are zooming through your answers, overanalyzing
-                your vibe and rounding everything slightly in your favor. 🌌
-              </p>
-              <p className="text-sm text-gray-400">
-                This might feel dramatic. That&apos;s because you are.
+                Our AI scientists are zooming through your answers.
               </p>
             </motion.div>
           )}
@@ -376,45 +355,55 @@ export default function MotivationExperience() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -40 }}
               transition={{ duration: 0.4 }}
-              className="bg-black/60 border border-violet-500/40 rounded-3xl p-8 md:p-10 backdrop-blur-2xl shadow-[0_0_60px_rgba(139,92,246,0.6)] text-center space-y-6"
+              className="bg-black/60 border border-violet-500/40 rounded-3xl p-8 md:p-10 backdrop-blur-2xl shadow-[0_0_60px_rgba(139,92,246,0.6)]"
             >
-              <p className="text-xs tracking-[0.3em] text-violet-300 uppercase">
+              <p className="text-xs tracking-[0.3em] text-violet-300 uppercase text-center">
                 COSMIC LAB · SUBJECT REPORT
               </p>
 
-              <div className="flex flex-col items-center gap-3">
-                <div className="inline-flex items-end gap-2">
-                  <span className="text-5xl font-extrabold text-violet-200">
-                    {result.score}
-                  </span>
-                  <span className="text-gray-400 mb-2">/ 10 main character energy</span>
+              <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+                {/* LEFT — USER IMAGE */}
+                <div className="flex justify-center">
+                  {imageBase64 && (
+                    <img
+                      src={imageBase64}
+                      alt="Uploaded Face"
+                      className="w-64 h-64 md:w-80 md:h-80 rounded-2xl object-cover border border-violet-400/40 shadow-lg"
+                    />
+                  )}
                 </div>
-                <p className="text-lg font-semibold text-violet-100">
-                  {result.title}
-                </p>
+
+                {/* RIGHT — RESULT */}
+                <div className="space-y-6 text-center md:text-left">
+                  <div className="inline-flex items-end gap-2 mx-auto md:mx-0">
+                    <span className="text-5xl font-extrabold text-violet-200">
+                      {result.score}
+                    </span>
+                    <span className="text-gray-400 mb-2">/ 10 main character energy</span>
+                  </div>
+
+                  <p className="text-xl font-semibold text-violet-100">
+                    {result.title}
+                  </p>
+
+                  <p className="text-gray-200 whitespace-pre-line">
+                    {result.message}
+                  </p>
+
+                  <button
+                    className="mt-4 px-6 py-3 rounded-full border border-violet-400/70 text-sm hover:bg-violet-500/20 transition"
+                    onClick={() => {
+                      setForm(initialForm);
+                      setImageBase64(null);
+                      setPreviewUrl(null);
+                      setResult(null);
+                      setStage("form");
+                    }}
+                  >
+                    Run another scan
+                  </button>
+                </div>
               </div>
-
-              <p className="text-gray-200 max-w-2xl mx-auto whitespace-pre-line">
-                {result.message}
-              </p>
-
-              <p className="text-[11px] text-gray-500">
-                Disclaimer: this is not medical, financial or legal advice.  
-                It&apos;s just aggressively supportive internet energy.
-              </p>
-
-              <button
-                className="mt-4 px-6 py-3 rounded-full border border-violet-400/70 text-sm hover:bg-violet-500/20 transition"
-                onClick={() => {
-                  setForm(initialForm);
-                  setImageBase64(null);
-                  setPreviewUrl(null);
-                  setResult(null);
-                  setStage("form");
-                }}
-              >
-                Run another scan
-              </button>
             </motion.div>
           )}
         </AnimatePresence>
