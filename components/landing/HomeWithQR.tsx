@@ -3,8 +3,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import QRCode from "react-qr-code";
+import { useRouter } from "next/navigation";
 
 export default function HomeWithQR() {
+  const router = useRouter();
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -20,7 +22,6 @@ export default function HomeWithQR() {
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
-    // Send to create ScanEvent
     const res = await fetch("/api/scan/init", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -52,7 +53,10 @@ export default function HomeWithQR() {
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      <div className="absolute inset-0 flex items-center justify-center">
+      {/* Center content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-10">
+
+        {/* QR / Start Button */}
         {!qrUrl ? (
           <motion.button
             onClick={handleGetStarted}
@@ -78,6 +82,15 @@ export default function HomeWithQR() {
             <QRCode value={qrUrl} size={220} />
           </div>
         )}
+
+        {/* ✅ Skip button ALWAYS visible */}
+        <button
+          onClick={() => router.push("/magic-experience")}
+          className="px-6 py-3 rounded-xl border border-white/40 bg-white/10 hover:bg-white/20 text-white text-lg transition"
+        >
+          Skip & Continue →
+        </button>
+
       </div>
     </div>
   );

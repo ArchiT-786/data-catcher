@@ -47,16 +47,24 @@
 //   );
 // }
 import "../styles/globals.css"; // or "./globals.css" if moved
+import { Space_Grotesk } from "next/font/google";
+
+const space = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-space",
+});
 
 export const metadata = {
-  title: "Data Catcher",
+  title: "Your App",
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={space.variable}>
+      <body className="font-space">{children}</body>
     </html>
   );
 }
+
 

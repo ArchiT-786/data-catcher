@@ -1,26 +1,28 @@
-import { infos } from "@/config/landing";
-import BentoGrid from "@/components/sections/bentogrid";
-import Features from "@/components/sections/features";
-import HeroLanding from "@/components/sections/hero-landing";
-import InfoLanding from "@/components/sections/info-landing";
-import Powered from "@/components/sections/powered";
-import PreviewLanding from "@/components/sections/preview-landing";
-import Testimonials from "@/components/sections/testimonials";
-import HomeWithQR from "@/components/landing/HomeWithQR";
+"use client";
 
+import { useState } from "react";
+import CursorGlow from "@/components/CursorGlow";
+import MotivationExperience from "@/components/landing/MotivationExperience";
+import MoonParallaxLanding from "@/components/landing/MoonParallaxLanding";
+import CosmicBackground from "@/components/CosmicBackground";
 
 export default function IndexPage() {
+  const [started, setStarted] = useState(false);
+
   return (
-    <>
-      <HomeWithQR />
-      {/* <HeroLanding /> */}
-      {/* <PreviewLanding /> */}
-      {/* <Powered /> */}
-      {/* <BentoGrid /> */}
-      {/* <InfoLanding data={infos[0]} reverse={true} /> */}
-      {/* <InfoLanding data={infos[1]} /> */}
-      {/* <Features />
-      <Testimonials /> */}
-    </>
+    <div className="relative min-h-screen w-full overflow-hidden">
+      {/* GLOBAL CURSOR EFFECT */}
+      <CursorGlow />
+
+      {/* GLOBAL COSMIC PARTICLES + HOLOGRAMS */}
+      <CosmicBackground />
+
+      {/* PAGE CONTENT */}
+      {!started ? (
+        <MoonParallaxLanding onStart={() => setStarted(true)} />
+      ) : (
+        <MotivationExperience />
+      )}
+    </div>
   );
 }
