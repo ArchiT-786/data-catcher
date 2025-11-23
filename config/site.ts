@@ -4,9 +4,9 @@ import { env } from "@/env.mjs";
 const site_url = env.NEXT_PUBLIC_APP_URL;
 
 export const siteConfig: SiteConfig = {
-  name: "Unlimited Animated Series",
+  name: "Data Catcher",
   description:
-    "Discover a vibrant collection of free animated content, creative cartoon videos, and playful motion graphics designed to inspire, entertain, and captivate audiences with high-quality visuals and endless creative imagination.",
+    "Data Catcher turns playful experiences into powerful insights – capture rich, first-party user data with interactive forms, vibe scans, and creative flows.",
   url: site_url,
   ogImage: `${site_url}/_static/og.jpg`,
   links: {
